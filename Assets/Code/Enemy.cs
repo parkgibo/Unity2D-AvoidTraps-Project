@@ -32,7 +32,6 @@ public class Enemy : MonoBehaviour
             GameManager.Instance.GameOver();
             animator.SetTrigger("Enemy");
             animator.SetTrigger("EnemyTrigger");
-            
         }
     }
     

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4333562262906668516}
   - component: {fileID: 4963294059665840966}
   - component: {fileID: 3247062199586482621}
-  - component: {fileID: -7148516922597347485}
+  - component: {fileID: 5349167564019998483}
   m_Layer: 0
   m_Name: angel
   m_TagString: ITEM
@@ -143,7 +143,7 @@ PolygonCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -178,7 +178,7 @@ PolygonCollider2D:
       - {x: 0.2761485, y: -0.011990069}
       - {x: 0.29999998, y: 0.16499999}
   m_UseDelaunayMesh: 0
---- !u!114 &-7148516922597347485
+--- !u!114 &5349167564019998483
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -190,8 +190,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fa1f3e8a9c2d994cb23f619af8f0005, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Item1: {fileID: 2345608441239456027}
-  Item2: {fileID: 8838113442627545393, guid: dce89a37b6f191e41844bb0576d73454, type: 3}
-  Item3: {fileID: 1882709383182416400, guid: a0dce447a2263a141bff3446bc82c538, type: 3}
-  Angel: {fileID: 3624787165195451387, guid: 1e5e011bed240cb4c9f6338cee694e8d, type: 3}
+  angel: {fileID: 3624787165195451387, guid: 1e5e011bed240cb4c9f6338cee694e8d, type: 3}
   Heal: {fileID: 6767917359197092799, guid: e28c761fa32b8da42ad47cbe8de0f7ac, type: 3}

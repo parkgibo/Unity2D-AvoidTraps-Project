@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject poop;
     private int score;
+    private bool doubleScoreActive =false;
 
     [SerializeField]
     private Text scoreTxt;
@@ -79,15 +80,33 @@ public class GameManager : MonoBehaviour
     public void Score() //현 게임 실행 시 스코어 추가
     {
         if (stopTrigger)
-            score++;
-        scoreTxt.text = "Score : " + score;
+        {
+            if (doubleScoreActive)
+                score += 2; // 2배 점수 적용
+            else
+                score++;
+
+            scoreTxt.text = "Score : " + score;
+        }
+            
+    }
+    public void ActivateDoubleScore(float duration)
+    {
+        StartCoroutine(DoubleScoreRoutine(duration));
+    }
+
+    private IEnumerator DoubleScoreRoutine(float duration)
+    {
+        doubleScoreActive = true;
+        yield return new WaitForSeconds(duration);
+        doubleScoreActive = false;
     }
     IEnumerator CreatepoopRoutine() //적 생성 코드
     {
         while (stopTrigger)
         {
             CreatePoop();
-            float waitTime2 = Random.Range(0.3f,0.5f); //0.3초에서 0.5사이에서 작동
+            float waitTime2 = Random.Range(0.3f, 0.5f); //0.3초에서 0.5사이에서 작동
             yield return new WaitForSeconds(waitTime2);
         }
     }
@@ -99,11 +118,8 @@ public class GameManager : MonoBehaviour
             CreateItem();
             float waitTime = Random.Range(5f, 15f); //5초에서 15 사이에서 작동
             yield return new WaitForSeconds(waitTime);
-            
 }
-
     }
-
     private void CreateItem() //아이템 생성 코드
     {
 
@@ -123,38 +139,6 @@ public class GameManager : MonoBehaviour
         GameObject obj = Instantiate(poop, pos, Quaternion.identity);
         obj.transform.parent = objbox.transform;
     }
-
-    private void OnCollisionEnter2D(Collision2D collision) //Enemy랑 똑같은 코드, 땅에 떨어지면 사라지고 플레이어에게 닿으면 작동되게 만듬
-    {
-        if (collision.gameObject.tag == "Ground")
-        {
-            Destroy(gameObject);
-        }
-        if (collision.gameObject.tag == "Player")
-        {
-            ApplyItemEffect(collision.gameObject);
-            Destroy(gameObject);
-        }
-    }
-    private void ApplyItemEffect(GameObject player) //플레이어 아이템 습득 시 효과 적용
-    {
-        if (gameObject.tag == "ITEM")
-        {
-            //Angel.SetActive(true);
-            Debug.Log("1");
-
-        }
-        else if (gameObject.tag == "ITEM2")
-        {
-            //Heal.SetActive(true);
-            Debug.Log("2");
-
-        }
-        else if (gameObject.tag == "ITEM3")
-        {
-            Debug.Log("3");
-
-        }
-    }
+    
 
 }

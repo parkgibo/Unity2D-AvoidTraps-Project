@@ -12,16 +12,51 @@ public class Player : MonoBehaviour
     private SpriteRenderer renderer;
     private float speed = 8;
     private bool isDead;
+    public GameObject angel;
+    public GameObject Heal;
+    private float shieldTime = 10f;
+    private bool isShieldActive = false;
 
-
-    
     void Start()
     {
+        ScreenChk();
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         renderer = GetComponent<SpriteRenderer>();
- 
+        angelstart();
+        HealStart();
     }
+
+    private void angelstart()
+    {
+        angel.SetActive(false);
+        isShieldActive = false;
+    }
+
+    private void angelbust()
+    {
+       angel.SetActive(true);
+       isShieldActive = true;
+    }
+
+    private void HealStart()
+    {
+        Heal.SetActive(false);
+    }
+
+    public void Healbust()
+    {
+        Heal.SetActive(true);
+        StartCoroutine(ActivateDoubleScore());
+    }
+    public IEnumerator ActivateDoubleScore()
+    {
+        GameManager.Instance.ActivateDoubleScore(5f);
+        yield return new WaitForSeconds(5f);
+        HealStart();
+    }
+
+
     void Update()
     {
         if (Input.GetMouseButton(0)) // 마우스로 움직이는 코드 및 애니메이션 작동
@@ -45,69 +80,25 @@ public class Player : MonoBehaviour
         if (worldPos.x > 0.95f) worldPos.x = 0.95f;
         transform.position = Camera.main.ViewportToWorldPoint(worldPos);
     }
+
+    
+    public IEnumerator ActivateShieldForLimitedTime()
+    {
+        angelbust();
+        yield return new WaitForSeconds(shieldTime);
+        // 방패 비활성화 로직을 추가할 수 있음
+        angelstart();
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        // 방패가 활성화된 상태에서만 충돌 처리
+        if (isShieldActive && collision.CompareTag("Enemy"))
+        {
+            Destroy(collision.gameObject);  // 적 제거
+        }
+    }
+    
 }
 
 
 
-/*
- using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEngine;
-
-public class Player : MonoBehaviour
-{
-    private Rigidbody2D rigidbody;
-    private Animator animator;
-    private SpriteRenderer renderer;
-    private float speed = 8;
-    private float horizontal;
-    void Start()
-    {
-        rigidbody = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
-        renderer = GetComponent<SpriteRenderer>();
-    }
-
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        horizontal = Input.GetAxis("Horizontal");
-
-        if (GameManager.Instance.stopTrigger)
-        {
-            
-            PlayerMove();
-            animator.SetTrigger("Start");
-            
-        }
-        if (!GameManager.Instance.stopTrigger)
-        {
-            animator.SetTrigger("Dead");
-        }
-        ScreenChk();
-    }
-
-    private void PlayerMove()
-    {
-        animator.SetFloat("Speed", Mathf.Abs(horizontal));
-        if (horizontal < 0)
-        {
-            renderer.flipX = true;
-        }
-        else if (horizontal > 0)
-        {
-            renderer.flipX = false;
-        }
-            rigidbody.velocity = new Vector2(horizontal * speed, rigidbody.velocity.y);
-    }
-
-    private void ScreenChk()
-    {
-        Vector3 worlpos = Camera.main.WorldToViewportPoint(this.transform.position);
-        if (worlpos.x < 0.05f) worlpos.x = 0.05f;
-        if (worlpos.x > 0.95f) worlpos.x = 0.95f;
-        this.transform.position = Camera.main.ViewportToWorldPoint(worlpos);
-    }
-}
- */

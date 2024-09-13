@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 9163044423962519764}
   - component: {fileID: 4971152467119780812}
   - component: {fileID: 3207160231039888432}
-  - component: {fileID: 9176332007282889570}
+  - component: {fileID: -4284094205313992441}
   m_Layer: 0
   m_Name: bomb
   m_TagString: ITEM3
@@ -143,13 +143,13 @@ CapsuleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.004750228, y: -0.034201574}
   m_Size: {x: 0.17049956, y: 0.18000002}
   m_Direction: 0
---- !u!114 &9176332007282889570
+--- !u!114 &-4284094205313992441
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -161,8 +161,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fa1f3e8a9c2d994cb23f619af8f0005, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Item1: {fileID: 2345608441239456027, guid: 6dc9740707c6c1d4783e10177aa7be69, type: 3}
-  Item2: {fileID: 8838113442627545393, guid: dce89a37b6f191e41844bb0576d73454, type: 3}
-  Item3: {fileID: 1882709383182416400}
-  Angel: {fileID: 3624787165195451387, guid: 1e5e011bed240cb4c9f6338cee694e8d, type: 3}
+  angel: {fileID: 3624787165195451387, guid: 1e5e011bed240cb4c9f6338cee694e8d, type: 3}
   Heal: {fileID: 6767917359197092799, guid: e28c761fa32b8da42ad47cbe8de0f7ac, type: 3}

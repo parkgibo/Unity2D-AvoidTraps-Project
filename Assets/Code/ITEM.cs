@@ -6,8 +6,9 @@ public class ITEM : MonoBehaviour
 {
     private Rigidbody2D rigidbody;
     private Animator animator;
-    public GameObject shieldEffectPrefab; // 방어 효과 오브젝트의 프리팹
-    private GameObject shieldEffectInstance; // 방어 효과 오브젝트의 인스턴스
+
+    public GameObject angel;
+    private float shieldTime = 10f;
 
     void Start()
     {
@@ -15,16 +16,16 @@ public class ITEM : MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    // Collider2D로 변경
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
             Destroy(gameObject);
         }
-        if (collision.gameObject.CompareTag("Player"))
+        else if (collision.gameObject.CompareTag("Player"))
         {
             ApplyItemEffect(collision.gameObject);
-            Destroy(gameObject);
         }
     }
 
@@ -33,49 +34,35 @@ public class ITEM : MonoBehaviour
         if (CompareTag("ITEM"))
         {
             Debug.Log("1");
-            ItemAngel itemAngel = player.GetComponent<ItemAngel>();
-            if (itemAngel != null)
+            // Player 클래스의 ActivateShieldForLimitedTime 코루틴 호출
+            Player playerScript = player.GetComponent<Player>();
+            if (playerScript != null)
             {
-                itemAngel.ActivateTemporaryShield();
-                if (shieldEffectPrefab != null)
-                {
-                    if (shieldEffectInstance == null)
-                    {
-                        shieldEffectInstance = Instantiate(shieldEffectPrefab, player.transform);
-                        shieldEffectInstance.transform.localPosition = Vector3.zero; // 플레이어의 위치에 효과를 위치시킴
-                    }
-                    shieldEffectInstance.SetActive(true); // 효과 활성화
-                }
-                StartCoroutine(DisableShieldEffectAfterTime(5f)); // 5초 후 방어 효과 비활성화
+                playerScript.StartCoroutine(playerScript.ActivateShieldForLimitedTime());
             }
         }
-        else if (CompareTag("ITEM2"))
+        if (CompareTag("ITEM2"))
         {
             Debug.Log("2");
-            
+            Player playerScript = player.GetComponent<Player>();
+            if (playerScript != null)
+            {
+                playerScript.Healbust();
+            }
         }
-        else if (CompareTag("ITEM3"))
+        if (CompareTag("ITEM3"))
         {
             Debug.Log("3");
-            DestroyAllEnemies();
+            DestroyAllEnemies();  // 적 제거 효과
+            Destroy(gameObject);
         }
     }
-
-    private void DestroyAllEnemies()
+    private void DestroyAllEnemies() // 아이템 폭탄(적 개체 전부 제거 효과)
     {
         Enemy[] enemies = FindObjectsOfType<Enemy>();
         foreach (Enemy enemy in enemies)
         {
             Destroy(enemy.gameObject);
-        }
-    }
-
-    private IEnumerator DisableShieldEffectAfterTime(float duration)
-    {
-        yield return new WaitForSeconds(duration);
-        if (shieldEffectInstance != null)
-        {
-            shieldEffectInstance.SetActive(false); // 효과 비활성화
         }
     }
 }
