@@ -6,15 +6,16 @@ public class ITEM : MonoBehaviour
 {
     private Rigidbody2D rigidbody;
     private Animator animator;
-
     public GameObject angel;
     private float shieldTime = 10f;
+
 
     void Start()
     {
         animator = GetComponent<Animator>();
         rigidbody = GetComponent<Rigidbody2D>();
     }
+    
 
     // Collider2D로 변경
     private void OnTriggerEnter2D(Collider2D collision)
@@ -28,7 +29,6 @@ public class ITEM : MonoBehaviour
             ApplyItemEffect(collision.gameObject);
         }
     }
-
     private void ApplyItemEffect(GameObject player)
     {
         if (CompareTag("ITEM"))
@@ -52,17 +52,24 @@ public class ITEM : MonoBehaviour
         }
         if (CompareTag("ITEM3"))
         {
+           
             Debug.Log("3");
-            DestroyAllEnemies();  // 적 제거 효과
+            DestroyAllEnemies();// 적 제거 효과
             Destroy(gameObject);
+            
         }
     }
     private void DestroyAllEnemies() // 아이템 폭탄(적 개체 전부 제거 효과)
     {
+        
         Enemy[] enemies = FindObjectsOfType<Enemy>();
         foreach (Enemy enemy in enemies)
         {
             Destroy(enemy.gameObject);
+            
         }
+        
     }
+
+
 }

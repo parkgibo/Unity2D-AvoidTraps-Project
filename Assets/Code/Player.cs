@@ -1,9 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
-using static UnityEngine.GraphicsBuffer;
 
 public class Player : MonoBehaviour
 {
@@ -16,10 +12,12 @@ public class Player : MonoBehaviour
     public GameObject Heal;
     private float shieldTime = 10f;
     private bool isShieldActive = false;
+    public AudioSource angelMusic;
+    public AudioSource healMusic;
 
     void Start()
     {
-        ScreenChk();
+        
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         renderer = GetComponent<SpriteRenderer>();
@@ -31,23 +29,25 @@ public class Player : MonoBehaviour
     {
         angel.SetActive(false);
         isShieldActive = false;
+        
     }
 
     private void angelbust()
     {
        angel.SetActive(true);
        isShieldActive = true;
+       angelMusic.Play();
     }
 
     private void HealStart()
     {
         Heal.SetActive(false);
     }
-
     public void Healbust()
     {
         Heal.SetActive(true);
         StartCoroutine(ActivateDoubleScore());
+        healMusic.Play();
     }
     public IEnumerator ActivateDoubleScore()
     {
@@ -55,7 +55,7 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(5f);
         HealStart();
     }
-
+    
 
     void Update()
     {
@@ -73,15 +73,6 @@ public class Player : MonoBehaviour
             animator.SetFloat("Speed", 0f);
         }
     }
-    private void ScreenChk() //카메라 고정
-    {
-        Vector3 worldPos = Camera.main.WorldToViewportPoint(transform.position);
-        if (worldPos.x < 0.05f) worldPos.x = 0.05f;
-        if (worldPos.x > 0.95f) worldPos.x = 0.95f;
-        transform.position = Camera.main.ViewportToWorldPoint(worldPos);
-    }
-
-    
     public IEnumerator ActivateShieldForLimitedTime()
     {
         angelbust();
@@ -99,6 +90,3 @@ public class Player : MonoBehaviour
     }
     
 }
-
-
-

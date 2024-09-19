@@ -7,17 +7,11 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField]
     private Animator animator;
-
     private Rigidbody2D rigidbody;
     void Start()
     {
         animator = GetComponent<Animator>();
         rigidbody = GetComponent<Rigidbody2D>();    
-    }
-
-    void Update()
-    {
-        
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -30,13 +24,15 @@ public class Enemy : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             GameManager.Instance.GameOver();
+            MainSound mainSound = FindObjectOfType<MainSound>();
+            if (mainSound != null)
+            {
+                mainSound.StopMusicOnPlayerCollision(); // À½¾Ç Á¤Áö
+            }
             animator.SetTrigger("Enemy");
             animator.SetTrigger("EnemyTrigger");
         }
     }
-    
-
-
 }
 
 
